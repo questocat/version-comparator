@@ -17,10 +17,12 @@ class VersionCompare
     protected $version;
 
     /**
+     * 可以的操作符分别是：<、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> 和 ne。
+     *
      * @var array
      */
     protected $comps = [
-        -1 => '<',
+        -1 => ['<', 'lt'],
         0 => '==',
         1 => '>',
     ];
@@ -111,15 +113,69 @@ class VersionCompare
     {
         $version1 = static::create($version1)->getVersion();
         $version2 = static::create($version2)->getVersion();
+        $comp = $this->execCompareTask($version1, $version2);
 
+        return $this->showResult($comp);
+    }
+
+    protected function execCompareTask()
+    {
+        $comp = 0;
+        $compareTasks = ['commonTask', 'preReleaseTask', 'buildMetadataTask'];
+
+        array_walk($compareTasks, function ($value) use (&$comp) {
+            if (!$comp) {
+                $comp = call_user_func([$this, $value]);
+            }
+        });
+
+        return $comp;
+    }
+
+    protected function showResult()
+    {
+    }
+
+    protected function commonTask($version1, $version2)
+    {
+        // 1.0.0 < 2.0.0 < 2.1.0 < 2.1.1
         $version1Str = strval($version1->getMajor().$version1->getMinor().$version1->getPatch());
         $version2Str = strval($version2->getMajor().$version2->getMinor().$version2->getPatch());
 
-        if ($comp = version_compare($version1Str, $version2Str)) {
-            return $this->comps[$comp] == $operator;
-        }
+        return version_compare($version1Str, $version2Str);
+    }
 
-        // continue
+    protected function preReleaseTask($version1, $version2)
+    {
+        // 1.0.0-alpha < 1.0.0
+        if ($preRelease1 = $version1->getPreRelease() ||
+            $preRelease2 = $version2->getPreRelease()) {
+            if ($preRelease1 && !$preRelease2) {
+                return -1;
+            }
+
+            if (!$preRelease1 && $preRelease2) {
+                return 1;
+            }
+
+            // 0
+        }
+    }
+
+    protected function buildMetadataTask($version1, $version2)
+    {
+        if ($buildMetadata1 = $version1->getBuildMetadata() ||
+            $buildMetadata2 = $version2->getBuildMetadata()) {
+            if ($buildMetadata1 && !$buildMetadata2) {
+                return -1;
+            }
+
+            if (!$buildMetadata1 && $buildMetadata2) {
+                return 1;
+            }
+
+            // 0
+        }
     }
 
     /**
