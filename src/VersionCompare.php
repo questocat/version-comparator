@@ -17,14 +17,15 @@ class VersionCompare
     protected $version;
 
     /**
-     * 可以的操作符分别是：<、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> 和 ne。
+     * Can use the comparison operator.
+     * <、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> 和 ne.
      *
      * @var array
      */
-    protected $comps = [
-        -1 => ['<', 'lt'],
-        0 => '==',
-        1 => '>',
+    protected $compOperators = [
+        -1 => ['<', 'lt', '<=', 'le', '!=', '<>', 'ne'],
+        0 => ['==', '=', 'eq'],
+        1 => ['>', 'gt', '>=', 'ge', '!=', '<>', 'ne'],
     ];
 
     /**
@@ -115,7 +116,7 @@ class VersionCompare
         $version2 = static::create($version2)->getVersion();
         $comp = $this->execCompareTask($version1, $version2);
 
-        return $this->showResult($comp);
+        return $this->showResult($comp, $operator);
     }
 
     protected function execCompareTask()
@@ -132,7 +133,7 @@ class VersionCompare
         return $comp;
     }
 
-    protected function showResult()
+    protected function showResult($comp, $operator)
     {
     }
 
