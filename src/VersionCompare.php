@@ -3,45 +3,22 @@
 namespace Emanci\VersionCompare;
 
 /**
+ * 按照"语义化版本控制规范"比较版本号.
+ *
  * @link http://semver.org Semantic Versioning
  */
 class VersionCompare
 {
     /**
-     * The major version number.
+     * The Version instance.
      *
-     * @var int
+     * @var Version
      */
-    protected $major = 0;
+    protected $version;
 
     /**
-     * The minor version number.
-     *
-     * @var int
+     * @var array
      */
-    protected $minor = 0;
-
-    /**
-     * The patch number.
-     *
-     * @var int
-     */
-    protected $patch = 0;
-
-    /**
-     * The pre-release version number.
-     *
-     * @var mixed
-     */
-    protected $preRelease;
-
-    /**
-     * The build metadata information.
-     *
-     * @var mixed
-     */
-    protected $buildMetadata;
-
     protected $comps = [
         -1 => '<',
         0 => '==',
@@ -51,81 +28,89 @@ class VersionCompare
     /**
      * VersionCompare construct.
      *
-     * @param string $version
+     * @param string $versionStr
      */
-    public function __construct($version = null)
+    public function __construct($versionStr = null)
     {
-        if ($version && is_string($version)) {
-            $this->parseVersion($version);
+        $this->version = new Version();
+
+        if ($versionStr && is_string($versionStr)) {
+            $this->parseVersion($versionStr);
         }
     }
 
-    public function setMajor($major)
+    /**
+     * Set version.
+     *
+     * @param Version $version
+     *
+     * @return VersionCompare
+     */
+    public function setVersion(Version $version)
     {
-        $this->major = $major;
+        $this->version = $version;
+
+        return $this;
     }
 
-    public function setMinor($minor)
+    /**
+     * Get version.
+     *
+     * @return Version
+     */
+    public function getVersion()
     {
-        $this->minor = $minor;
-    }
-
-    public function setPatch($patch)
-    {
-        $this->patch = $patch;
-    }
-
-    public function setPreRelease($preRelease)
-    {
-        $this->preRelease = $preRelease;
-    }
-
-    public function setBuildMetadata($buildMetadata)
-    {
-        $this->buildMetadata = $buildMetadata;
-    }
-
-    public function getMajor()
-    {
-        return $this->major;
-    }
-
-    public function getMinor()
-    {
-        return $this->minor;
-    }
-
-    public function getPatch()
-    {
-        return $this->patch;
-    }
-
-    public function getPreRelease()
-    {
-        return $this->preRelease;
-    }
-
-    public function getBuildMetadata()
-    {
-        return $this->buildMetadata;
+        return $this->version;
     }
 
     /**
      * Creates a new Version instance.
      *
-     * @param string $version
+     * @param string $versionStr
      *
-     * @return Version
+     * @return VersionCompare
      */
-    public static function create($version)
+    protected static function create($versionStr)
     {
-        return new static($version);
+        return new static($versionStr);
     }
 
+    /**
+     * Checks if the string is a valid string representation of a version.
+     *
+     * @param string $string
+     *
+     * @return bool
+     */
+    public static function checkValid($string)
+    {
+        return true;
+    }
+
+    /**
+     * Compares one version string to another.
+     *
+     * @param string $versionStr
+     *
+     * @return bool
+     */
+    public function compareTo($versionStr)
+    {
+    }
+
+    /**
+     * Compares two "PHP-standardized" version number strings.
+     *
+     * @param string $version1
+     * @param string $operator
+     * @param string $version2
+     *
+     * @return bool
+     */
     public function compare($version1, $operator, $version2)
     {
-        $version1 = static::create($version1);
-        $version2 = static::create($version2);
+        $version1 = static::create($version1)->getVersion();
+        $version2 = static::create($version2)->getVersion();
 
         $version1Str = strval($version1->getMajor().$version1->getMinor().$version1->getPatch());
         $version2Str = strval($version2->getMajor().$version2->getMinor().$version2->getPatch());
@@ -137,28 +122,36 @@ class VersionCompare
         // continue
     }
 
-    protected function parseVersion($version)
+    /**
+     * Parses the version string.
+     *
+     * @param string $versionStr
+     */
+    protected function parseVersion($versionStr)
     {
-        if (false !== strpos($version, '+')) {
-            list($version, $buildMetadata) = explode('+', $version);
-            $this->setBuildMetadata($buildMetadata);
+        if (false !== strpos($versionStr, '+')) {
+            list($versionStr, $buildMetadata) = explode('+', $versionStr);
+            $buildMetadata = explode('.', $buildMetadata);
+            $this->version->setBuildMetadata($buildMetadata);
         }
 
-        if (false !== strpos($version, '-')) {
-            list($version, $preRelease) = explode('-', $version);
-            $this->setPreRelease($preRelease);
+        if (false !== ($pos = strpos($versionStr, '-'))) {
+            $original = $versionStr;
+            $versionStr = substr($versionStr, 0, $pos);
+            $preRelease = explode('.', substr($original, $pos + 1));
+            $this->version->setPreRelease($preRelease);
         }
 
-        $versions = explode('.', $version);
+        $versions = explode('.', $versionStr);
 
-        $this->setMajor($versions[0]);
+        $this->version->setMajor((int) $versions[0]);
 
         if (isset($versions[1])) {
-            $this->setMinor($versions[1]);
+            $this->version->setMinor((int) $versions[1]);
         }
 
         if (isset($versions[2])) {
-            $this->setPatch($versions[2]);
+            $this->version->setPatch((int) $versions[2]);
         }
     }
 }
