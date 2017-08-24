@@ -100,7 +100,7 @@ class VersionCompare
     }
 
     /**
-     * Compares two "PHP-standardized" version number strings.
+     * Compares two version number strings.
      *
      * @param string      $version1
      * @param string      $version2
