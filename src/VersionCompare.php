@@ -102,9 +102,9 @@ class VersionCompare
     {
         $version1 = static::create($version1)->getVersion();
         $version2 = static::create($version2)->getVersion();
-        $comp = $this->execCompareTask($version1, $version2);
+        $compare = $this->execCompareTask($version1, $version2);
 
-        return $this->resultBool($comp, $operator);
+        return $this->resultBool($compare, $operator);
     }
 
     /**
@@ -119,16 +119,16 @@ class VersionCompare
      */
     protected function execCompareTask($version1, $version2)
     {
-        $comp = 0;
+        $compare = 0;
         $compareTasks = ['standardVersionTask', 'preReleaseVersionTask', 'buildMetadataVersionTask'];
 
-        array_walk($compareTasks, function ($value) use (&$comp, $version1, $version2) {
-            if (!$comp) {
-                $comp = call_user_func_array([$this, $value], [$version1, $version2]);
+        array_walk($compareTasks, function ($value) use (&$compare, $version1, $version2) {
+            if (!$compare) {
+                $compare = call_user_func_array([$this, $value], [$version1, $version2]);
             }
         });
 
-        return $comp;
+        return $compare;
     }
 
     /**
@@ -238,35 +238,37 @@ class VersionCompare
      * Can use the comparison operator
      * <、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> and ne
      *
-     * @param int    $comp
+     * @param int    $compare
      * @param string $operator
      *
      * @return bool
      */
-    protected function resultBool($comp, $operator)
+    protected function resultBool($compare, $operator)
     {
-        if (!strncmp($operator, '<', 1) || !strncmp($operator, 'lt', 1)) {
-            return $comp == -1;
+        $compareLen = strlen($operator);
+
+        if (!strncmp($operator, '<', $compareLen) || !strncmp($operator, 'lt', $compareLen)) {
+            return $compare == -1;
         }
 
-        if (!strncmp($operator, '<=', 2) || !strncmp($operator, 'le', 2)) {
-            return $comp != 1;
+        if (!strncmp($operator, '<=', $compareLen) || !strncmp($operator, 'le', $compareLen)) {
+            return $compare != 1;
         }
 
-        if (!strncmp($operator, '>', 1) || !strncmp($operator, 'gt', 1)) {
-            return $comp == 1;
+        if (!strncmp($operator, '>', $compareLen) || !strncmp($operator, 'gt', $compareLen)) {
+            return $compare == 1;
         }
 
-        if (!strncmp($operator, '>=', 2) || !strncmp($operator, 'ge', 2)) {
-            return $comp != -1;
+        if (!strncmp($operator, '>=', $compareLen) || !strncmp($operator, 'ge', $compareLen)) {
+            return $compare != -1;
         }
 
-        if (!strncmp($operator, '==', 2) || !strncmp($operator, '=', 2) || !strncmp($operator, 'eq', 2)) {
-            return $comp == 0;
+        if (!strncmp($operator, '==', $compareLen) || !strncmp($operator, '=', $compareLen) || !strncmp($operator, 'eq', $compareLen)) {
+            return $compare == 0;
         }
 
-        if (!strncmp($operator, '!=', 2) || !strncmp($operator, '<>', 2) || !strncmp($operator, 'ne', 2)) {
-            return $comp != 0;
+        if (!strncmp($operator, '!=', $compareLen) || !strncmp($operator, '<>', $compareLen) || !strncmp($operator, 'ne', $compareLen)) {
+            return $compare != 0;
         }
 
         return null;
