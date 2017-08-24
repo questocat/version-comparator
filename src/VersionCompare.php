@@ -14,6 +14,13 @@ class VersionCompare
     const COMPARE_GREATER_THAN = 1;
 
     /**
+     * The valid semantic version number strings.
+     *
+     * @var string
+     */
+    const VERSION_REGEX = '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/';
+
+    /**
      * The Version instance.
      *
      * @var Version
@@ -73,13 +80,13 @@ class VersionCompare
     /**
      * Checks if the string is a valid string representation of a version.
      *
-     * @param string $string
+     * @param string $versionStr
      *
      * @return bool
      */
-    public static function checkVersionValid($string)
+    public static function checkVersionValid($versionStr)
     {
-        return true;
+        return preg_match(self::VERSION_REGEX, $versionStr);
     }
 
     /**
@@ -233,8 +240,8 @@ class VersionCompare
      */
     protected function parseVersion($versionStr)
     {
-        if (static::checkVersionValid($versionStr)) {
-            // throw exception
+        if (!static::checkVersionValid($versionStr)) {
+            throw new InvalidVersionException("Invalid version string: {$versionStr}");
         }
 
         if (false !== strpos($versionStr, '+')) {
