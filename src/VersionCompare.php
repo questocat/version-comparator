@@ -17,18 +17,6 @@ class VersionCompare
     protected $version;
 
     /**
-     * Can use the comparison operator.
-     * <、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> 和 ne.
-     *
-     * @var array
-     */
-    protected $compOperators = [
-        -1 => ['<', 'lt', '<=', 'le', '!=', '<>', 'ne'],
-        0 => ['==', '=', 'eq'],
-        1 => ['>', 'gt', '>=', 'ge', '!=', '<>', 'ne'],
-    ];
-
-    /**
      * VersionCompare construct.
      *
      * @param string $versionStr
@@ -116,39 +104,63 @@ class VersionCompare
         $version2 = static::create($version2)->getVersion();
         $comp = $this->execCompareTask($version1, $version2);
 
-        return $this->showResult($comp, $operator);
+        return $this->resultBool($comp, $operator);
     }
 
-    protected function execCompareTask()
+    /**
+     * Using a predefined task to compares version number strings.
+     *
+     * returns -1 if the first version is lower than the second, 0 if they are equal, and 1 if the second is lower
+     *
+     * @param string $version1
+     * @param string $version2
+     *
+     * @return int
+     */
+    protected function execCompareTask($version1, $version2)
     {
         $comp = 0;
-        $compareTasks = ['commonTask', 'preReleaseTask', 'buildMetadataTask'];
+        $compareTasks = ['standardVersionTask', 'preReleaseVersionTask', 'buildMetadataVersionTask'];
 
-        array_walk($compareTasks, function ($value) use (&$comp) {
+        array_walk($compareTasks, function ($value) use (&$comp, $version1, $version2) {
             if (!$comp) {
-                $comp = call_user_func([$this, $value]);
+                $comp = call_user_func_array([$this, $value], [$version1, $version2]);
             }
         });
 
         return $comp;
     }
 
-    protected function showResult($comp, $operator)
+    /**
+     * Compares the standard version.
+     *
+     * 1.0.0 < 2.0.0 < 2.1.0 < 2.1.1
+     *
+     * @param string $version1
+     * @param string $version2
+     *
+     * @return int
+     */
+    protected function standardVersionTask($version1, $version2)
     {
-    }
-
-    protected function commonTask($version1, $version2)
-    {
-        // 1.0.0 < 2.0.0 < 2.1.0 < 2.1.1
         $version1Str = strval($version1->getMajor().$version1->getMinor().$version1->getPatch());
         $version2Str = strval($version2->getMajor().$version2->getMinor().$version2->getPatch());
 
         return version_compare($version1Str, $version2Str);
     }
 
-    protected function preReleaseTask($version1, $version2)
+    /**
+     * Compares the pre-release version.
+     *
+     * 1.0.0-alpha < 1.0.0
+     *
+     * @param string $version1
+     * @param string $version2
+     *
+     * @return int
+     */
+    protected function preReleaseVersionTask($version1, $version2)
     {
-        // 1.0.0-alpha < 1.0.0
         if ($preRelease1 = $version1->getPreRelease() ||
             $preRelease2 = $version2->getPreRelease()) {
             if ($preRelease1 && !$preRelease2) {
@@ -163,7 +175,15 @@ class VersionCompare
         }
     }
 
-    protected function buildMetadataTask($version1, $version2)
+    /**
+     * Compares the build metadata version.
+     *
+     * @param string $version1
+     * @param string $version2
+     *
+     * @return int
+     */
+    protected function buildMetadataVersionTask($version1, $version2)
     {
         if ($buildMetadata1 = $version1->getBuildMetadata() ||
             $buildMetadata2 = $version2->getBuildMetadata()) {
@@ -180,7 +200,7 @@ class VersionCompare
     }
 
     /**
-     * Parses the version string.
+     * Parses the version number string.
      *
      * @param string $versionStr
      */
@@ -210,5 +230,45 @@ class VersionCompare
         if (isset($versions[2])) {
             $this->version->setPatch((int) $versions[2]);
         }
+    }
+
+    /**
+     * Returns a Boolean value.
+     *
+     * Can use the comparison operator
+     * <、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> and ne
+     *
+     * @param int    $comp
+     * @param string $operator
+     *
+     * @return bool
+     */
+    protected function resultBool($comp, $operator)
+    {
+        if (!strncmp($operator, '<', 1) || !strncmp($operator, 'lt', 1)) {
+            return $comp == -1;
+        }
+
+        if (!strncmp($operator, '<=', 2) || !strncmp($operator, 'le', 2)) {
+            return $comp != 1;
+        }
+
+        if (!strncmp($operator, '>', 1) || !strncmp($operator, 'gt', 1)) {
+            return $comp == 1;
+        }
+
+        if (!strncmp($operator, '>=', 2) || !strncmp($operator, 'ge', 2)) {
+            return $comp != -1;
+        }
+
+        if (!strncmp($operator, '==', 2) || !strncmp($operator, '=', 2) || !strncmp($operator, 'eq', 2)) {
+            return $comp == 0;
+        }
+
+        if (!strncmp($operator, '!=', 2) || !strncmp($operator, '<>', 2) || !strncmp($operator, 'ne', 2)) {
+            return $comp != 0;
+        }
+
+        return null;
     }
 }
