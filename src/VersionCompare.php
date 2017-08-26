@@ -1,128 +1,26 @@
 <?php
 
+/*
+ * This file is part of version-compare package.
+ *
+ * (c) emanci <zhengchaopu@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Emanci\VersionCompare;
 
 /**
  * 按照"语义化版本控制规范"比较版本号.
  *
- * @link http://semver.org Semantic Versioning
+ * @see http://semver.org Semantic Versioning
  */
 class VersionCompare
 {
     const COMPARE_LESS_THAN = -1;
     const COMPARE_EQUAL_TO = 0;
     const COMPARE_GREATER_THAN = 1;
-
-    /**
-     * The valid semantic version number strings.
-     *
-     * @var string
-     */
-    const VERSION_REGEX = '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/';
-
-    /**
-     * The Version instance.
-     *
-     * @var Version
-     */
-    protected $version;
-
-    /**
-     * VersionCompare construct.
-     *
-     * @param string $versionStr
-     */
-    public function __construct($versionStr = null)
-    {
-        $this->version = new Version();
-
-        if ($versionStr && is_string($versionStr)) {
-            $this->parseVersion($versionStr);
-        }
-    }
-
-    /**
-     * Set version.
-     *
-     * @param Version $version
-     *
-     * @return VersionCompare
-     */
-    public function setVersion(Version $version)
-    {
-        $this->version = $version;
-
-        return $this;
-    }
-
-    /**
-     * Get version.
-     *
-     * @return Version
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * Creates a new Version instance.
-     *
-     * @param string $versionStr
-     *
-     * @return VersionCompare
-     */
-    protected static function create($versionStr)
-    {
-        return new static($versionStr);
-    }
-
-    /**
-     * Checks if the string is a valid string representation of a version.
-     *
-     * @param string $versionStr
-     *
-     * @return bool
-     */
-    public static function checkVersionValid($versionStr)
-    {
-        return preg_match(self::VERSION_REGEX, $versionStr);
-    }
-
-    /**
-     * Compares one version number string to another.
-     *
-     * @param string      $versionStr
-     * @param string|null $operator
-     *
-     * @return int|bool
-     */
-    public function compareTo($versionStr, $operator = null)
-    {
-        $version1 = $this->getVersion();
-        $version2 = static::create($versionStr)->getVersion();
-        $compare = $this->actionCompare($version1, $version2);
-
-        return $operator ? $this->resultBool($compare, $operator) : $compare;
-    }
-
-    /**
-     * Compares two version number strings.
-     *
-     * @param string      $version1
-     * @param string      $version2
-     * @param string|null $operator
-     *
-     * @return int|bool
-     */
-    public function compare($version1, $version2, $operator = null)
-    {
-        $version1 = static::create($version1)->getVersion();
-        $version2 = static::create($version2)->getVersion();
-        $compare = $this->actionCompare($version1, $version2);
-
-        return $operator ? $this->resultBool($compare, $operator) : $compare;
-    }
 
     /**
      * Compares version number strings.
@@ -134,7 +32,7 @@ class VersionCompare
      *
      * @return int
      */
-    protected function actionCompare(Version $version1, Version $version2)
+    public function actionCompare(Version $version1, Version $version2)
     {
         $compare = $this->compareStandardVersion($version1, $version2);
 
@@ -143,6 +41,48 @@ class VersionCompare
         }
 
         return $compare;
+    }
+
+    /**
+     * Returns a Boolean value.
+     *
+     * Can use the comparison operator
+     * <、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> and ne
+     *
+     * @param int    $compare
+     * @param string $operator
+     *
+     * @return bool
+     */
+    public function resultBool($compare, $operator)
+    {
+        $compareLen = strlen($operator);
+
+        if (!strncmp($operator, '<', $compareLen) || !strncmp($operator, 'lt', $compareLen)) {
+            return $compare == self::COMPARE_LESS_THAN;
+        }
+
+        if (!strncmp($operator, '<=', $compareLen) || !strncmp($operator, 'le', $compareLen)) {
+            return $compare != self::COMPARE_GREATER_THAN;
+        }
+
+        if (!strncmp($operator, '>', $compareLen) || !strncmp($operator, 'gt', $compareLen)) {
+            return $compare == self::COMPARE_GREATER_THAN;
+        }
+
+        if (!strncmp($operator, '>=', $compareLen) || !strncmp($operator, 'ge', $compareLen)) {
+            return $compare != self::COMPARE_LESS_THAN;
+        }
+
+        if (!strncmp($operator, '==', $compareLen) || !strncmp($operator, '=', $compareLen) || !strncmp($operator, 'eq', $compareLen)) {
+            return $compare == self::COMPARE_EQUAL_TO;
+        }
+
+        if (!strncmp($operator, '!=', $compareLen) || !strncmp($operator, '<>', $compareLen) || !strncmp($operator, 'ne', $compareLen)) {
+            return $compare != self::COMPARE_EQUAL_TO;
+        }
+
+        return null;
     }
 
     /**
@@ -231,78 +171,5 @@ class VersionCompare
         }
 
         return self::COMPARE_EQUAL_TO;
-    }
-
-    /**
-     * Parses the version number string.
-     *
-     * @param string $versionStr
-     */
-    protected function parseVersion($versionStr)
-    {
-        if (!static::checkVersionValid($versionStr)) {
-            throw new InvalidVersionException("Invalid version string: {$versionStr}");
-        }
-
-        if (false !== strpos($versionStr, '+')) {
-            list($versionStr, $buildMetadata) = explode('+', $versionStr);
-            $buildMetadata = explode('.', $buildMetadata);
-            $this->version->setBuildMetadata($buildMetadata);
-        }
-
-        if (false !== ($pos = strpos($versionStr, '-'))) {
-            $original = $versionStr;
-            $versionStr = substr($versionStr, 0, $pos);
-            $preRelease = explode('.', substr($original, $pos + 1));
-            $this->version->setPreRelease($preRelease);
-        }
-
-        list($major, $minor, $patch) = array_map('intval', explode('.', $versionStr));
-
-        $this->version->setMajor($major);
-        $this->version->setMinor($minor);
-        $this->version->setPatch($patch);
-    }
-
-    /**
-     * Returns a Boolean value.
-     *
-     * Can use the comparison operator
-     * <、 lt、<=、 le、>、 gt、>=、 ge、==、 =、eq、 !=、<> and ne
-     *
-     * @param int    $compare
-     * @param string $operator
-     *
-     * @return bool
-     */
-    protected function resultBool($compare, $operator)
-    {
-        $compareLen = strlen($operator);
-
-        if (!strncmp($operator, '<', $compareLen) || !strncmp($operator, 'lt', $compareLen)) {
-            return $compare == self::COMPARE_LESS_THAN;
-        }
-
-        if (!strncmp($operator, '<=', $compareLen) || !strncmp($operator, 'le', $compareLen)) {
-            return $compare != self::COMPARE_GREATER_THAN;
-        }
-
-        if (!strncmp($operator, '>', $compareLen) || !strncmp($operator, 'gt', $compareLen)) {
-            return $compare == self::COMPARE_GREATER_THAN;
-        }
-
-        if (!strncmp($operator, '>=', $compareLen) || !strncmp($operator, 'ge', $compareLen)) {
-            return $compare != self::COMPARE_LESS_THAN;
-        }
-
-        if (!strncmp($operator, '==', $compareLen) || !strncmp($operator, '=', $compareLen) || !strncmp($operator, 'eq', $compareLen)) {
-            return $compare == self::COMPARE_EQUAL_TO;
-        }
-
-        if (!strncmp($operator, '!=', $compareLen) || !strncmp($operator, '<>', $compareLen) || !strncmp($operator, 'ne', $compareLen)) {
-            return $compare != self::COMPARE_EQUAL_TO;
-        }
-
-        return null;
     }
 }

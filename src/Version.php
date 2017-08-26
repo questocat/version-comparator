@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of version-compare package.
+ *
+ * (c) emanci <zhengchaopu@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace Emanci\VersionCompare;
 
 class Version
@@ -40,20 +49,6 @@ class Version
     protected $buildMetadata;
 
     /**
-     * Set major.
-     *
-     * @param string $major
-     *
-     * @return Version
-     */
-    public function setMajor($major)
-    {
-        $this->major = $major;
-
-        return $this;
-    }
-
-    /**
      * Get major.
      *
      * @return int
@@ -61,20 +56,6 @@ class Version
     public function getMajor()
     {
         return $this->major;
-    }
-
-    /**
-     * Set minor.
-     *
-     * @param string $minor
-     *
-     * @return Version
-     */
-    public function setMinor($minor)
-    {
-        $this->minor = $minor;
-
-        return $this;
     }
 
     /**
@@ -88,20 +69,6 @@ class Version
     }
 
     /**
-     * Set patch.
-     *
-     * @param string $patch
-     *
-     * @return Version
-     */
-    public function setPatch($patch)
-    {
-        $this->patch = $patch;
-
-        return $this;
-    }
-
-    /**
      * Get patch.
      *
      * @return int
@@ -109,20 +76,6 @@ class Version
     public function getPatch()
     {
         return $this->patch;
-    }
-
-    /**
-     * Set preRelease.
-     *
-     * @param array $preRelease
-     *
-     * @return Version
-     */
-    public function setPreRelease(array $preRelease)
-    {
-        $this->preRelease = $preRelease;
-
-        return $this;
     }
 
     /**
@@ -136,20 +89,6 @@ class Version
     }
 
     /**
-     * Set buildMetadata.
-     *
-     * @param array $buildMetadata
-     *
-     * @return Version
-     */
-    public function setBuildMetadata(array $buildMetadata)
-    {
-        $this->buildMetadata = $buildMetadata;
-
-        return $this;
-    }
-
-    /**
      * Get buildMetadata.
      *
      * @return array
@@ -160,9 +99,25 @@ class Version
     }
 
     /**
+     * Map the given array onto the version's properties.
+     *
+     * @param array $attributes
+     *
+     * @return $this
+     */
+    public function map(array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            $this->{$key} = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Checks if the version number is stable.
      *
-     * @return bool TRUE if it is stable, FALSE if not
+     * @return bool
      */
     public function isStable()
     {
