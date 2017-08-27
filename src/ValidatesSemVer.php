@@ -16,6 +16,8 @@ trait ValidatesSemVer
     /**
      * Checks if the string is a valid string representation of a version.
      *
+     * @see http://semver.org  Semantic Versioning Specification (SemVer)
+     *
      * @param string $versionStr
      *
      * @return bool

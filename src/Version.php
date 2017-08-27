@@ -39,14 +39,14 @@ class Version
      *
      * @var array
      */
-    protected $preRelease;
+    protected $preRelease = [];
 
     /**
      * The build metadata identifiers.
      *
      * @var array
      */
-    protected $buildMetadata;
+    protected $buildMetadata = [];
 
     /**
      * Get major.

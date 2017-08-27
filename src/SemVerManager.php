@@ -37,7 +37,7 @@ class SemVerManager
         $this->setVersion(new Version());
         $this->setVersionCompare(new VersionCompare());
 
-        if ($versionStr && is_string($versionStr)) {
+        if (!is_null($versionStr)) {
             $this->mapVersionObject($versionStr);
         }
     }
@@ -47,7 +47,7 @@ class SemVerManager
      *
      * @param Version $version
      *
-     * @return Version
+     * @return SemVerManager
      */
     public function setVersion(Version $version)
     {
@@ -69,7 +69,9 @@ class SemVerManager
     /**
      * Set versionCompare.
      *
-     * @return VersionCompare
+     * @param VersionCompare $versionCompare
+     *
+     * @return SemVerManager
      */
     public function setVersionCompare(VersionCompare $versionCompare)
     {
@@ -89,7 +91,7 @@ class SemVerManager
     public function compareTo($versionStr, $operator = null)
     {
         $version = static::create($versionStr)->getVersion();
-        $compare = $this->versionCompare->actionCompare($this->version, $version);
+        $compare = $this->versionCompare->versionCompare($this->version, $version);
 
         return $operator ? $this->versionCompare->resultBool($compare, $operator) : $compare;
     }
@@ -107,7 +109,7 @@ class SemVerManager
     {
         $version1 = static::create($version1)->getVersion();
         $version2 = static::create($version2)->getVersion();
-        $compare = $this->versionCompare->actionCompare($version1, $version2);
+        $compare = $this->versionCompare->versionCompare($version1, $version2);
 
         return $operator ? $this->versionCompare->resultBool($compare, $operator) : $compare;
     }

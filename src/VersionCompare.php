@@ -12,7 +12,7 @@
 namespace Emanci\VersionCompare;
 
 /**
- * 按照"语义化版本控制规范"比较版本号.
+ * Compare the version number strings according to the "Semantic Versioning 2.0.0".
  *
  * @see http://semver.org Semantic Versioning
  */
@@ -32,7 +32,7 @@ class VersionCompare
      *
      * @return int
      */
-    public function actionCompare(Version $version1, Version $version2)
+    public function versionCompare(Version $version1, Version $version2)
     {
         $compare = $this->compareStandardVersion($version1, $version2);
 
