@@ -93,7 +93,7 @@ class SemVerManager
         $version = static::create($versionStr)->getVersion();
         $compare = $this->versionCompare->versionCompare($this->version, $version);
 
-        return $operator ? $this->versionCompare->resultBool($compare, $operator) : $compare;
+        return $operator ? $this->versionCompare->returnBool($compare, $operator) : $compare;
     }
 
     /**
@@ -111,7 +111,7 @@ class SemVerManager
         $version2 = static::create($version2)->getVersion();
         $compare = $this->versionCompare->versionCompare($version1, $version2);
 
-        return $operator ? $this->versionCompare->resultBool($compare, $operator) : $compare;
+        return $operator ? $this->versionCompare->returnBool($compare, $operator) : $compare;
     }
 
     /**

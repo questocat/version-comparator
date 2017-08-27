@@ -54,7 +54,7 @@ class VersionCompare
      *
      * @return bool
      */
-    public function resultBool($compare, $operator)
+    public function returnBool($compare, $operator)
     {
         $compareLen = strlen($operator);
 
