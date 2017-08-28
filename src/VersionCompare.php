@@ -141,7 +141,7 @@ class VersionCompare
 
             foreach ($left as $index => $leftItem) {
                 if (!isset($right[$index])) {
-                    return $lt;
+                    return $gt;
                 }
 
                 $rightItem = $right[$index];
@@ -150,7 +150,10 @@ class VersionCompare
                     continue;
                 }
 
-                if ($leftIsNumeric = is_numeric($leftItem) && $rightIsNumeric = is_numeric($rightItem)) {
+                $leftIsNumeric = is_numeric($leftItem);
+                $rightIsNumeric = is_numeric($rightItem);
+
+                if ($leftIsNumeric && $rightIsNumeric) {
                     return $leftItem < $rightItem ? $lt : $gt;
                 }
 
