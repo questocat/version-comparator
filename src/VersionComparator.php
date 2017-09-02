@@ -16,7 +16,7 @@ namespace Emanci\VersionCompare;
  *
  * @see http://semver.org Semantic Versioning
  */
-class VersionCompare
+class VersionComparator
 {
     const COMPARE_LESS_THAN = -1;
     const COMPARE_EQUAL_TO = 0;

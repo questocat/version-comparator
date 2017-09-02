@@ -21,21 +21,21 @@ class SemVerManager
     protected $version;
 
     /**
-     * The VersionCompare instance.
+     * The VersionComparator instance.
      *
-     * @var VersionCompare
+     * @var VersionComparator
      */
-    protected $versionCompare;
+    protected $versionComparator;
 
     /**
-     * VersionCompare construct.
+     * SemVerManager construct.
      *
      * @param string $versionStr
      */
     public function __construct($versionStr = null)
     {
         $this->setVersion(new Version());
-        $this->setVersionCompare(new VersionCompare());
+        $this->setVersionComparator(new VersionComparator());
 
         if (!is_null($versionStr)) {
             $this->mapVersionObject($versionStr);
@@ -67,15 +67,15 @@ class SemVerManager
     }
 
     /**
-     * Set versionCompare.
+     * Set VersionComparator.
      *
-     * @param VersionCompare $versionCompare
+     * @param VersionComparator $versionComparator
      *
      * @return SemVerManager
      */
-    public function setVersionCompare(VersionCompare $versionCompare)
+    public function setVersionComparator(VersionComparator $versionComparator)
     {
-        $this->versionCompare = $versionCompare;
+        $this->versionComparator = $versionComparator;
 
         return $this;
     }
@@ -91,9 +91,9 @@ class SemVerManager
     public function compareTo($versionStr, $operator = null)
     {
         $version = static::create($versionStr)->getVersion();
-        $compare = $this->versionCompare->versionCompare($this->version, $version);
+        $compare = $this->versionComparator->versionCompare($this->version, $version);
 
-        return $operator ? $this->versionCompare->returnBool($compare, $operator) : $compare;
+        return $operator ? $this->versionComparator->returnBool($compare, $operator) : $compare;
     }
 
     /**
@@ -109,9 +109,9 @@ class SemVerManager
     {
         $version1 = static::create($version1)->getVersion();
         $version2 = static::create($version2)->getVersion();
-        $compare = $this->versionCompare->versionCompare($version1, $version2);
+        $compare = $this->versionComparator->versionCompare($version1, $version2);
 
-        return $operator ? $this->versionCompare->returnBool($compare, $operator) : $compare;
+        return $operator ? $this->versionComparator->returnBool($compare, $operator) : $compare;
     }
 
     /**
