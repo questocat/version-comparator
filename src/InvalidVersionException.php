@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Emanci\VersionCompare;
+namespace Emanci\VersionComparator;
 
 use Exception;
 

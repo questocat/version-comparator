@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Emanci\VersionCompare;
+namespace Emanci\VersionComparator;
 
 /**
  * Compare the version number strings according to the "Semantic Versioning 2.0.0".
