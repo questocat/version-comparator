@@ -1,5 +1,5 @@
 {
-    "name": "emanci/version-compare",
+    "name": "emanci/version-comparator",
     "description": "Compares two version number strings based on Semantic Versioning 2.0.0",
     "keywords": ["version-compare"],
     "license": "MIT",
