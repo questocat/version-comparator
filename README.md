@@ -6,14 +6,14 @@ Compares two version number strings based on [Semantic Versioning 2.0.0](http://
 
 Using [Composer](https://getcomposer.org) to add the package to your project's dependencies:
 
-```php
-composer require emanci/version-compare
+```bash
+$ composer require emanci/version-compare
 ```
 
 ## Usage
-```php
-// using compare method
 
+#### Using compare method
+```php
 $semVerManager = new SemVerManager();
 $semVerManager->compare('2.9.0', '2.9.6', '<');                           // true
 $semVerManager->compare('5.1.0', '5.1.0-alpha', '>');                     // true
@@ -29,8 +29,10 @@ $semVerManager->compare('1.0.0-rc.1+build.1', '1.0.0-rc.1', '<');         // fal
 $semVerManager->compare('1.0.0-rc.1+build.1', '1.0.0-rc.1', '=');         // true
 $semVerManager->compare('1.0.0-rc.2+build.1', '1.0.0-rc.1', '<');         // fasle
 $semVerManager->compare('1.0.0-rc.2+build.1', '1.0.0-rc.1', '>=');        // true
+```
 
-// other examples
+#### Other examples
+```php
 $semVerManager->compare('1.0.0-alpha', '1.0.0-alpha.1', '<');
 $semVerManager->compare('1.0.0-alpha.1', '1.0.0-alpha.beta', '<');
 $semVerManager->compare('1.0.0-alpha.beta', '1.0.0-beta', '<');
@@ -38,13 +40,14 @@ $semVerManager->compare('1.0.0-beta', '1.0.0-beta.2', '<');
 $semVerManager->compare('1.0.0-beta.2', '1.0.0-beta.11', '<');
 $semVerManager->compare('1.0.0-beta.11', '1.0.0-rc.1', '<');
 $semVerManager->compare('1.0.0-rc.1', '1.0.0', '<');
+```
 
-// conclusion
-// 1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0- rc.1 < 1.0.0
+#### Conclusion
+1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0- rc.1 < 1.0.0
 
 
-// using compareTo method
-
+#### Using compareTo method
+```php
 $semVerManager = new SemVerManager('2.9.0');
 $semVerManager->compareTo('2.9.6', '<');        // true
 $semVerManager->compareTo('2.8.9', '>');        // true
@@ -59,4 +62,4 @@ $semVerManager->compareTo('2.8.9-alpha', '>');  // true
 
 ## License
 
-Licensed under the [MIT license](https://github.com/emanci/version-compare/blob/master/LICENSE).
+Licensed under the [MIT license](https://github.com/emanci/version-comparator/blob/master/LICENSE).
