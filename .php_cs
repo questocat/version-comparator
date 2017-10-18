@@ -1,6 +1,6 @@
 <?php
 $header = <<<'EOF'
-This file is part of version-compare package.
+This file is part of emanci/version-comparator package.
 
 (c) emanci <zhengchaopu@gmail.com>
 
