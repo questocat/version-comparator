@@ -4,6 +4,5 @@ linting: true
 
 enabled:
   - newline_after_open_tag
-  - strict
   - strict_param
   - ordered_use
