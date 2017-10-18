@@ -118,12 +118,12 @@ class VersionComparator
         $preRelease1 = $version1->getPreRelease();
         $preRelease2 = $version2->getPreRelease();
 
-        if ($preRelease1 || $preRelease2) {
-            if ($preRelease1 && empty($preRelease2)) {
+        if (!empty($preRelease1) || !empty($preRelease2)) {
+            if (!empty($preRelease1) && empty($preRelease2)) {
                 return self::COMPARE_LESS_THAN;
             }
 
-            if (empty($preRelease1) && $preRelease2) {
+            if (empty($preRelease1) && !empty($preRelease2)) {
                 return self::COMPARE_GREATER_THAN;
             }
 

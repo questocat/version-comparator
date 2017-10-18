@@ -16,9 +16,9 @@ use Emanci\VersionComparator\VersionComparator;
 use Emanci\VersionComparator\VersionParser;
 
 /**
- * Convention:.
- *
  * @see  http://php.net/manual/zh/function.version-compare.php
+ *
+ * Convention:
  *
  * -1 , v1 < v2
  * 0 , v1 == v2
