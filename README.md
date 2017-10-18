@@ -1,13 +1,19 @@
-## version-matcher
+## version-comparator
 
 Compares two version number strings based on [Semantic Versioning 2.0.0](http://semver.org)
+
+[![StyleCI](https://styleci.io/repos/100619169/shield?branch=master)](https://styleci.io/repos/100619169)
+[![Build Status](https://scrutinizer-ci.com/g/emanci/version-comparator/badges/build.png?b=master)](https://scrutinizer-ci.com/g/emanci/version-comparator/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/emanci/version-comparator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/emanci/version-comparator/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/emanci/version-comparator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/emanci/version-comparator/?branch=master)
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://packagist.org/packages/emanci/version-comparator)
 
 ## Installation
 
 Using [Composer](https://getcomposer.org) to add the package to your project's dependencies:
 
 ```bash
-$ composer require emanci/version-compare
+$ composer require emanci/version-comparator
 ```
 
 ## Usage
