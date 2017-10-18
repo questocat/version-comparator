@@ -52,7 +52,7 @@ class VersionComparator
      * @param int    $compare
      * @param string $operator
      *
-     * @return bool
+     * @return bool|null
      */
     public function returnBool($compare, $operator)
     {
