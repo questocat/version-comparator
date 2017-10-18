@@ -11,7 +11,6 @@
 
 namespace Tests;
 
-use Emanci\VersionComparator\InvalidVersionException;
 use Emanci\VersionComparator\VersionParser;
 
 class VersionParserTest extends TestCase
@@ -30,7 +29,7 @@ class VersionParserTest extends TestCase
 
     public function testInvalidVersionException()
     {
-        $this->expectException(InvalidVersionException::class);
+        $this->expectException('\Emanci\VersionComparator\InvalidVersionException');
 
         $versionStr = '1.0-rc.1+build.1';
         VersionParser::parse($versionStr);
