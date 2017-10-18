@@ -27,10 +27,12 @@ class VersionParserTest extends TestCase
         $this->assertCount(2, $result['buildMetadata']);
     }
 
+    /**
+     * @expectedException        \Emanci\VersionComparator\InvalidVersionException
+     * @expectedExceptionMessage Invalid version string
+     */
     public function testInvalidVersionException()
     {
-        $this->expectException('\Emanci\VersionComparator\InvalidVersionException');
-
         $versionStr = '1.0-rc.1+build.1';
         VersionParser::parse($versionStr);
     }
