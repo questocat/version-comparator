@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of emanci/version-comparator package.
+ * This file is part of questocat/version-comparator package.
  *
  * (c) emanci <zhengchaopu@gmail.com>
  *
@@ -15,4 +15,5 @@ use PHPUnit\Framework\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {
+    //
 }

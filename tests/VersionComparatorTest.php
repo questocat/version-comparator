@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of emanci/version-comparator package.
+ * This file is part of questocat/version-comparator package.
  *
  * (c) emanci <zhengchaopu@gmail.com>
  *
@@ -11,9 +11,9 @@
 
 namespace Tests;
 
-use Emanci\VersionComparator\Version;
-use Emanci\VersionComparator\VersionComparator;
-use Emanci\VersionComparator\VersionParser;
+use Questocat\VersionComparator\Version;
+use Questocat\VersionComparator\VersionComparator;
+use Questocat\VersionComparator\VersionParser;
 
 /**
  * @see  http://php.net/manual/zh/function.version-compare.php

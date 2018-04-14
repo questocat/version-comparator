@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of emanci/version-comparator package.
+ * This file is part of questocat/version-comparator package.
  *
  * (c) emanci <zhengchaopu@gmail.com>
  *
@@ -11,7 +11,7 @@
 
 namespace Tests;
 
-use Emanci\VersionComparator\SemVerManager;
+use Questocat\VersionComparator\SemVerManager;
 
 class SemVerManagerTest extends TestCase
 {

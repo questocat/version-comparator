@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of emanci/version-comparator package.
+ * This file is part of questocat/version-comparator package.
  *
  * (c) emanci <zhengchaopu@gmail.com>
  *
@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Emanci\VersionComparator;
+namespace Questocat\VersionComparator;
 
 /**
  * Compare the version number strings according to the "Semantic Versioning 2.0.0".
@@ -59,27 +59,27 @@ class VersionComparator
         $compareLen = strlen($operator);
 
         if (!strncmp($operator, '<', $compareLen) || !strncmp($operator, 'lt', $compareLen)) {
-            return $compare == self::COMPARE_LESS_THAN;
+            return self::COMPARE_LESS_THAN == $compare;
         }
 
         if (!strncmp($operator, '<=', $compareLen) || !strncmp($operator, 'le', $compareLen)) {
-            return $compare != self::COMPARE_GREATER_THAN;
+            return self::COMPARE_GREATER_THAN != $compare;
         }
 
         if (!strncmp($operator, '>', $compareLen) || !strncmp($operator, 'gt', $compareLen)) {
-            return $compare == self::COMPARE_GREATER_THAN;
+            return self::COMPARE_GREATER_THAN == $compare;
         }
 
         if (!strncmp($operator, '>=', $compareLen) || !strncmp($operator, 'ge', $compareLen)) {
-            return $compare != self::COMPARE_LESS_THAN;
+            return self::COMPARE_LESS_THAN != $compare;
         }
 
         if (!strncmp($operator, '==', $compareLen) || !strncmp($operator, '=', $compareLen) || !strncmp($operator, 'eq', $compareLen)) {
-            return $compare == self::COMPARE_EQUAL_TO;
+            return self::COMPARE_EQUAL_TO == $compare;
         }
 
         if (!strncmp($operator, '!=', $compareLen) || !strncmp($operator, '<>', $compareLen) || !strncmp($operator, 'ne', $compareLen)) {
-            return $compare != self::COMPARE_EQUAL_TO;
+            return self::COMPARE_EQUAL_TO != $compare;
         }
 
         return null;

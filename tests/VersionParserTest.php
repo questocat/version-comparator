@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of emanci/version-comparator package.
+ * This file is part of questocat/version-comparator package.
  *
  * (c) emanci <zhengchaopu@gmail.com>
  *
@@ -11,7 +11,7 @@
 
 namespace Tests;
 
-use Emanci\VersionComparator\VersionParser;
+use Questocat\VersionComparator\VersionParser;
 
 class VersionParserTest extends TestCase
 {
@@ -28,7 +28,7 @@ class VersionParserTest extends TestCase
     }
 
     /**
-     * @expectedException        \Emanci\VersionComparator\InvalidVersionException
+     * @expectedException        \Questocat\VersionComparator\InvalidVersionException
      * @expectedExceptionMessage Invalid version string
      */
     public function testInvalidVersionException()

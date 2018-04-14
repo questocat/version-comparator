@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of emanci/version-comparator package.
+ * This file is part of questocat/version-comparator package.
  *
  * (c) emanci <zhengchaopu@gmail.com>
  *
@@ -9,7 +9,7 @@
  * with this source code in the file LICENSE.
  */
 
-namespace Emanci\VersionComparator;
+namespace Questocat\VersionComparator;
 
 class Version
 {
@@ -121,6 +121,6 @@ class Version
      */
     public function isStable()
     {
-        return empty($this->preRelease) && $this->major !== 0;
+        return empty($this->preRelease) && 0 !== $this->major;
     }
 }
