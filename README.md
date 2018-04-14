@@ -3,10 +3,10 @@
 Compares two version number strings based on [Semantic Versioning 2.0.0](http://semver.org)
 
 [![StyleCI](https://styleci.io/repos/100619169/shield?branch=master)](https://styleci.io/repos/100619169)
-[![Build Status](https://scrutinizer-ci.com/g/questocat/version-comparator/badges/build.png?b=master)](https://scrutinizer-ci.com/g/emanci/version-comparator/build-status/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/questocat/version-comparator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/emanci/version-comparator/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/questocat/version-comparator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/emanci/version-comparator/?branch=master)
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://packagist.org/packages/emanci/version-comparator)
+[![Build Status](https://scrutinizer-ci.com/g/questocat/version-comparator/badges/build.png?b=master)](https://scrutinizer-ci.com/g/questocat/version-comparator/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/questocat/version-comparator/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/questocat/version-comparator/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/questocat/version-comparator/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/questocat/version-comparator/?branch=master)
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://packagist.org/packages/questocat/version-comparator)
 
 ## Installation
 
