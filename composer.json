@@ -1,11 +1,11 @@
 {
-    "name": "emanci/version-comparator",
+    "name": "questocat/version-comparator",
     "description": "Compares two version number strings based on Semantic Versioning 2.0.0",
     "keywords": ["version-compare"],
     "license": "MIT",
     "minimum-stability": "dev",
     "authors": [{
-        "name": "emanci",
+        "name": "questocat",
         "email": "zhengchaopu@gmail.com"
     }],
     "require": {
@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Emanci\\VersionComparator\\": "src/"
+            "Questocat\\VersionComparator\\": "src/"
         }
     },
     "autoload-dev": {
