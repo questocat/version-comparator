@@ -19,7 +19,9 @@ namespace Questocat\VersionComparator;
 class VersionComparator
 {
     const COMPARE_LESS_THAN = -1;
+
     const COMPARE_EQUAL_TO = 0;
+    
     const COMPARE_GREATER_THAN = 1;
 
     /**
